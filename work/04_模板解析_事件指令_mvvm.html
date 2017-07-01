@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>04_模板解析_事件指令_mvvm</title>
+</head>
+<body>
+<div id="test">
+  <p>{{name}}</p>
+  <button v-on:click="test">更新</button>
+</div>
+
+<script type="text/javascript" src="js/mvvm/mvvm.js"></script>
+<script type="text/javascript" src="js/mvvm/compile.js"></script>
+<script type="text/javascript" src="js/mvvm/observer.js"></script>
+<script type="text/javascript" src="js/mvvm/watcher.js"></script>
+<script type="text/javascript">
+  new MVVM({
+    //el : '#test',
+    el: document.getElementById('test'),
+    data : {
+      name: 'xiaoyon',
+    },
+    methods: {
+      test () {
+        this.name = 'laoyon'
+        alert(this.name)
+      }
+    }
+  })
+</script>
+</body>
+</html>

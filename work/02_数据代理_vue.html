@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>02_数据代理_vue</title>
+</head>
+<body>
+<div id="app">
+  <p>{{name}}</p>
+</div>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el : '#app',
+    data : {
+      name: 'xixi'
+    }
+  })
+  console.log(vm.name) // xixi  代理 读-->get()--->data.name
+  vm.name = 'haha' // haha 代理 写 -->set(value) -->data.name = value
+  console.log(vm._data.name)
+  console.log(vm)
+</script>
+</body>
+</html>

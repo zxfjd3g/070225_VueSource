@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div id="test">尚硅谷IT教育</div>
+
+<ul id="fragment_test">
+  <li>test1</li>
+  <li>test2</li>
+  <li>test3</li>
+</ul>
+
+
+<!--
+1. [].slice.call(lis): 将伪数组转换为真数组
+2. node.nodeType: 得到节点类型
+3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定描述符)
+4. Object.keys(obj): 得到对象自身可枚举属性组成的数组
+5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+6. DocumentFragment: 文档碎片(高效批量更新多个节点)
+-->
+
+<script type="text/javascript">
+  //1. [].slice.call(lis): 将伪数组转换为真数组
+  var lis = document.getElementsByTagName('li')
+  console.log(lis.forEach) // undefined
+  // lis = Array.from(lis)
+  // lis = [].slice.bind(lis)()
+  lis = [].slice.call(lis) // 返回的就是真数组
+  console.log(lis.forEach) // 有值
+
+  //2. node.nodeType: 得到节点类型
+  var element = document.getElementById('test')
+  var attr = element.getAttributeNode('id')
+  var text = element.firstChild
+  console.log(element.nodeType, element.nodeName, element.nodeValue)
+  console.log(attr.nodeType, attr.nodeName, attr.nodeValue)
+  console.log(text.nodeType, text.nodeName, text.nodeValue)
+
+  //3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定属性描述符)
+  /*
+   数据描述符
+      configurable: 是否可重新定义
+      enumerable: 是否枚举(for...in/keys())
+      value: 初始值
+      writable: 是否可修改, 如果为false代表不能修改(只读)
+   存取(访问)描述符
+    get(): 得到当前属性的值, 当读取当前属性值时回调
+    set(value): 监视属性值的变化, 当属性值发生改变时回调
+   */
+  var obj = {
+    firstName: 'A',
+    lastName: 'B'
+  }
+  // obj.fullName = 'A-B'
+  Object.defineProperty(obj, 'fullName', {
+    configurable: false,
+    enumerable: false,
+    get () {
+      console.log('get()')
+      return this.firstName + '-' + this.lastName
+    },
+    set (value) {
+      console.log('set()')
+      var names = value.split('-')
+      this.firstName = names[0]
+      this.lastName = names[1]
+    }
+  })
+  console.log(obj.fullName)
+  obj.fullName = 'C-D'
+  console.log(obj.firstName, obj.lastName)
+
+  // 重新定义
+ /* Object.defineProperty(obj, 'fullName', {
+    configurable: false,
+    enumerable: false,
+  })*/
+
+  //4. Object.keys(obj): 得到对象自身可枚举属性组成的数组
+  var arr = Object.keys(obj)
+  console.log(arr)
+
+  //5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+  console.log(obj.hasOwnProperty('firstName')) // true
+  console.log(obj.hasOwnProperty('toString')) // false
+
+  //6. DocumentFragment: 文档碎片(高效批量更新多个节点)
+  // 创建一个fragment
+  var fragment = document.createDocumentFragment()
+  // 取出页面中所有的li
+  var ul = document.getElementById('fragment_test')
+  var lisStr = ul.innerHTML
+  ul.innerHTML = '' // 此时更新界面
+  // 在内存中创建div
+  var div = document.createElement('div')
+  // 将所有li放到div中
+  div.innerHTML = lisStr
+  // 更新li
+  var lis = div.getElementsByTagName('li')
+  ;[].slice.call(lis).forEach(li => {
+    li.innerHTML = 'xxxx'   // 此时没有更新界面
+  })
+  // 添加到页面
+  fragment.appendChild(div)
+  ul.appendChild(fragment) // 此时才更新
+</script>
+</body>
+</html>

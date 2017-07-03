@@ -99,7 +99,7 @@ Compile.prototype = {
                     // 处理这个普通指令: 根据指令名(text/html/class/model)来确定处理的方法
                     compileUtil[dir] && compileUtil[dir](node, me.$vm, exp);
                 }
-
+                // 移除指令属性
                 node.removeAttribute(attrName);
             }
         });
@@ -169,6 +169,7 @@ var compileUtil = {
         //执行更新节点的方法
         updaterFn && updaterFn(node, this._getVMVal(vm, exp));
 
+        // 创建监视器对象: 一旦表达式需要更新显示就调用回调函数去更新界面
         new Watcher(vm, exp, function(value, oldValue) {
             updaterFn && updaterFn(node, value, oldValue);
         });

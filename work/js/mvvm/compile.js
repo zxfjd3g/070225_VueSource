@@ -142,14 +142,19 @@ var compileUtil = {
         this.bind(node, vm, exp, 'model');
 
         var me = this,
+          // 得到表达式对应的value
             val = this._getVMVal(vm, exp);
+        // 给input元素绑定input监听
         node.addEventListener('input', function(e) {
+            // 得到输入的值
             var newValue = e.target.value;
+            // 如果没有改变, 直接结束
             if (val === newValue) {
                 return;
             }
-
+            // 将最新的值设置到data中的对应属性 ---> set()--> 更新界面
             me._setVMVal(vm, exp, newValue);
+            // 保存新的值
             val = newValue;
         });
     },
